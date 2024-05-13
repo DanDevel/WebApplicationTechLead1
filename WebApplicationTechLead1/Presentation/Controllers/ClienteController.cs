@@ -23,17 +23,18 @@ namespace WebApplicationTechLead1.API.Controllers
             _testeQueryHandler = testeQueryHandler;
         }
 
+        #region MONGODB
 
         // GET: api/cliente
         [HttpGet]
-        [ProducesResponseType(typeof(List<Cliente>), 200)]
-        public async Task<ActionResult<List<Cliente>>> GetClientes()
+        [ProducesResponseType(typeof(List<Teste>), 200)]
+        public async Task<ActionResult<List<Teste>>> GetAllTestes()
         {
-            var clientes = await _clienteService.GetClientesAsync();
-            return Ok(clientes);
+            var query = new GetAllTestesQuery();
+            var testesCollection = await _testeQueryHandler.Handle(query);
+            return Ok(testesCollection);
         }
 
-        #region MONGODB
 
         // GET: api/cliente/5
         [HttpGet("{id}")]
@@ -42,18 +43,19 @@ namespace WebApplicationTechLead1.API.Controllers
         public async Task<ActionResult<Teste>> GetTesteById(string id)
         {
             var query = new GetTesteByIdQuery(id);
-            var teste = await _testeQueryHandler.Handle(query);
+            var collectionTestes = await _testeQueryHandler.Handle(query);
 
-            if (teste == null)
+            if (collectionTestes == null)
             {
                 return NotFound();
             }
 
-            return teste;
+            return collectionTestes;
         }
 
         #endregion
 
+        #region EntityFramework CRUD 
         // POST: api/cliente
         [HttpPost]
         [ProducesResponseType(typeof(Cliente), 201)]
@@ -118,6 +120,6 @@ namespace WebApplicationTechLead1.API.Controllers
             return NoContent();
         }
 
-
+        #endregion
     }
 }

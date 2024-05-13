@@ -20,7 +20,11 @@ namespace WebApplicationTechLead1.Services.Handlers
             return teste;
         }
 
-
+        public async Task<List<Teste>> Handle(GetAllTestesQuery query)
+        {
+            var collectionTestesAll = await _mongoDBContext.Testes.Find(_ => true).ToListAsync();
+            return collectionTestesAll;
+        }
     }
 
 
