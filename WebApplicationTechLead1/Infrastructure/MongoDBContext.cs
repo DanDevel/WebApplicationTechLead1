@@ -1,5 +1,6 @@
 ﻿using MongoDB.Driver;
 using WebApplicationTechLead1.Domain.Models;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace WebApplicationTechLead1.Infrastructure
 {
@@ -13,6 +14,6 @@ namespace WebApplicationTechLead1.Infrastructure
             _database = client.GetDatabase(databaseName);
         }
 
-        public IMongoCollection<Cliente> Clientes => _database.GetCollection<Cliente>("Clientes");
+        public IMongoCollection<Teste> Testes => _database.GetCollection<Teste>("testes");
     }
 }

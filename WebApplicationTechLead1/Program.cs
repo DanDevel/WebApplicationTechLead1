@@ -5,6 +5,7 @@ using Microsoft.OpenApi.Models;
 using WebApplicationTechLead1.Infrastructure;
 using WebApplicationTechLead1.Domain.Repositories;
 using WebApplicationTechLead1.Services;
+using WebApplicationTechLead1.Services.Handlers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,12 @@ builder.Services.AddDbContext<AppDbContext>();
 // Configuração dos serviços da aplicação
 builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
 builder.Services.AddScoped<ClienteService>();
+
+// Configuração do MongoDBContext e TesteQueryHandler
+var mongoDBConnectionString = builder.Configuration.GetConnectionString("MongoDBConnection");
+var mongoDBDatabaseName = builder.Configuration.GetConnectionString("MongoDBName");
+builder.Services.AddSingleton(_ => new MongoDBContext(mongoDBConnectionString, mongoDBDatabaseName));
+builder.Services.AddScoped<TesteQueryHandler>();
 
 builder.Services.AddControllers();
 

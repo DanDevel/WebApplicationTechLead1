@@ -1,26 +1,32 @@
-﻿using WebApplicationTechLead1.Domain.Models;
+﻿using MongoDB.Driver;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using WebApplicationTechLead1.Domain.Models;
+using WebApplicationTechLead1.Infrastructure;
 using WebApplicationTechLead1.Services.Queries;
 
 namespace WebApplicationTechLead1.Services.Handlers
 {
     public class ClienteQueryHandler
     {
-        private readonly ClienteService _clienteService;
+        private readonly MongoDBContext _mongoDBContext;
 
-        public ClienteQueryHandler(ClienteService clienteService)
+        public ClienteQueryHandler(MongoDBContext mongoDBContext)
         {
-            _clienteService = clienteService;
+            _mongoDBContext = mongoDBContext;
         }
 
-        public async Task<List<Cliente>> Handle(GetClientesQuery query)
+        public async Task<List<Teste>> Handle(GetClientesQuery query)
         {
-            return await _clienteService.GetClientesAsync();
+            var testes = await _mongoDBContext.Testes.Find(_ => true).ToListAsync();
+            return testes;
         }
 
-        public async Task<Cliente> Handle(GetClienteByIdQuery query)
+        public async Task<Teste> Handle(GetClienteByIdQuery query)
         {
-            return await _clienteService.GetClienteByIdAsync(query.Id);
+            var teste = await _mongoDBContext.Testes.Find(t => t.Id == query.Id.ToString()).FirstOrDefaultAsync();
+            return teste;
         }
+
     }
-
 }

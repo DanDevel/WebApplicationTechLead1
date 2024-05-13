@@ -5,6 +5,8 @@ using WebApplicationTechLead1.Domain.Models;
 using WebApplicationTechLead1.Domain.Repositories;
 using WebApplicationTechLead1.Services;
 using WebApplicationTechLead1.Services.Commands;
+using WebApplicationTechLead1.Services.Handlers;
+using WebApplicationTechLead1.Services.Queries;
 
 namespace WebApplicationTechLead1.API.Controllers
 {
@@ -13,11 +15,14 @@ namespace WebApplicationTechLead1.API.Controllers
     public class ClienteController : ControllerBase
     {
         private readonly ClienteService _clienteService;
+        private readonly TesteQueryHandler _testeQueryHandler;
 
-        public ClienteController(ClienteService clienteService)
+        public ClienteController(ClienteService clienteService, TesteQueryHandler testeQueryHandler)
         {
             _clienteService = clienteService;
+            _testeQueryHandler = testeQueryHandler;
         }
+
 
         // GET: api/cliente
         [HttpGet]
@@ -28,19 +33,26 @@ namespace WebApplicationTechLead1.API.Controllers
             return Ok(clientes);
         }
 
+        #region MONGODB
+
         // GET: api/cliente/5
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(Cliente), 200)]
+        [ProducesResponseType(typeof(Teste), 200)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<Cliente>> GetClienteById(int id)
+        public async Task<ActionResult<Teste>> GetTesteById(string id)
         {
-            var cliente = await _clienteService.GetClienteByIdAsync(id);
-            if (cliente == null)
+            var query = new GetTesteByIdQuery(id);
+            var teste = await _testeQueryHandler.Handle(query);
+
+            if (teste == null)
             {
                 return NotFound();
             }
-            return Ok(cliente);
+
+            return teste;
         }
+
+        #endregion
 
         // POST: api/cliente
         [HttpPost]
@@ -55,7 +67,7 @@ namespace WebApplicationTechLead1.API.Controllers
             await _clienteService.AddClienteAsync(cliente);
 
             // Retornar a resposta com o código 201 (Created) e os detalhes do cliente criado
-            return CreatedAtAction(nameof(GetClienteById), new { id = cliente.Id }, cliente);
+            return CreatedAtAction(nameof(GetClienteByIdQuery), new { id = cliente.Id }, cliente);
         }
 
 
