@@ -62,13 +62,10 @@ namespace WebApplicationTechLead1.API.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<Cliente>> AddCliente(AddClienteCommand command)
         {
-            // Criar um novo objeto Cliente utilizando o construtor com parâmetros
             var cliente = new Cliente(command.NomeEmpresa, command.PorteEmpresa);
 
-            // Adicionar o cliente utilizando o serviço
             await _clienteService.AddClienteAsync(cliente);
 
-            // Retornar a resposta com o código 201 (Created) e os detalhes do cliente criado
             return CreatedAtAction(nameof(GetClienteByIdQuery), new { id = cliente.Id }, cliente);
         }
 
@@ -85,21 +82,17 @@ namespace WebApplicationTechLead1.API.Controllers
                 return BadRequest();
             }
 
-            // Obter o cliente pelo ID
             var cliente = await _clienteService.GetClienteByIdAsync(id);
             if (cliente == null)
             {
                 return NotFound();
             }
 
-            // Criar um novo objeto Cliente com os dados atualizados
             var clienteAtualizado = new Cliente(command.NomeEmpresa, command.PorteEmpresa);
 
-            // Atualizar o cliente utilizando o serviço
             await _clienteService.UpdateClienteAsync(id, clienteAtualizado);
 
-            // Retornar uma resposta com o código 204 (No Content) indicando que a atualização foi bem-sucedida
-            return NoContent();
+            return Ok();
         }
 
 
@@ -117,7 +110,7 @@ namespace WebApplicationTechLead1.API.Controllers
 
             await _clienteService.DeleteClienteAsync(command.Id);
 
-            return NoContent();
+            return Ok();
         }
 
         #endregion
