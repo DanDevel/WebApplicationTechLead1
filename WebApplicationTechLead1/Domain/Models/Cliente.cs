@@ -13,7 +13,6 @@ namespace WebApplicationTechLead1.Domain.Models
         [RegularExpression("^(pequena|média|grande)$", ErrorMessage = "O porte da empresa deve ser 'pequena', 'média' ou 'grande'.")]
         public string PorteEmpresa { get; set; }
 
-        // Construtor vazio necessário para o Entity Framework
         public Cliente() { }
 
         public Cliente(string nomeEmpresa, string porteEmpresa)

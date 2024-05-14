@@ -1,22 +1,21 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
-using WebApplicationTechLead1.Infrastructure;
 using WebApplicationTechLead1.Domain.Repositories;
-using WebApplicationTechLead1.Services;
+using WebApplicationTechLead1.Infrastructure;
 using WebApplicationTechLead1.Services.Handlers;
+using WebApplicationTechLead1.Services;
+
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configuração do serviço de DbContext para o banco de dados relacional
 builder.Services.AddDbContext<AppDbContext>();
 
-// Configuração dos serviços da aplicação
 builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
 builder.Services.AddScoped<ClienteService>();
 
-// Configuração do MongoDBContext e TesteQueryHandler
 var mongoDBConnectionString = builder.Configuration.GetConnectionString("MongoDBConnection");
 var mongoDBDatabaseName = builder.Configuration.GetConnectionString("MongoDBName");
 builder.Services.AddSingleton(_ => new MongoDBContext(mongoDBConnectionString, mongoDBDatabaseName));
@@ -24,7 +23,6 @@ builder.Services.AddScoped<TesteQueryHandler>();
 
 builder.Services.AddControllers();
 
-// Configuração do Swagger
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Cadastro de Clientes", Version = "v1" });
@@ -32,7 +30,14 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-// Configuração do Swagger
+app.UseCors(options =>
+{
+    options.WithOrigins("http://localhost:3000", "http://192.168.0.14:3000")
+           .AllowAnyHeader()
+           .AllowAnyMethod();
+});
+
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

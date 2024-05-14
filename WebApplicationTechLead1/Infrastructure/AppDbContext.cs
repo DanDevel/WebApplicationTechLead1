@@ -9,7 +9,6 @@ namespace WebApplicationTechLead1.Infrastructure
     {
         public DbSet<Cliente> Clientes { get; set; }
 
-        // Configurar o provedor de configuração
         private readonly IConfiguration _configuration;
 
         public AppDbContext(DbContextOptions<AppDbContext> options, IConfiguration configuration) : base(options)
@@ -17,12 +16,10 @@ namespace WebApplicationTechLead1.Infrastructure
             _configuration = configuration;
         }
 
-        // Configurar a conexão com o banco de dados
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                // Obter a cadeia de conexão do arquivo appsettings.json
                 string connectionString = _configuration.GetConnectionString("DefaultConnection");
                 optionsBuilder.UseSqlServer(connectionString);
             }
