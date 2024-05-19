@@ -8,6 +8,7 @@ namespace WebApplicationTechLead1.Infrastructure
     public class AppDbContext : DbContext
     {
         public DbSet<Cliente> Clientes { get; set; }
+        public DbSet<Eventos> eventos { get; set; }
 
         private readonly IConfiguration _configuration;
 
