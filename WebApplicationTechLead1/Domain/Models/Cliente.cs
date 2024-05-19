@@ -20,5 +20,10 @@ namespace WebApplicationTechLead1.Domain.Models
             NomeEmpresa = nomeEmpresa;
             PorteEmpresa = porteEmpresa;
         }
+
+        public Cliente Clone()
+        {
+            return(Cliente) this.MemberwiseClone();
+        }
     }
 }
