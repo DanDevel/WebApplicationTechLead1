@@ -1,4 +1,5 @@
-﻿using WebApplicationTechLead1.Domain.Models;
+﻿using NUnit.Framework;
+using WebApplicationTechLead1.Domain.Models;
 using WebApplicationTechLead1.Services.Commands;
 
 namespace WebApplicationTechLead1.Services.Handlers

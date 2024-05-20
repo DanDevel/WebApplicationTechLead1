@@ -7,7 +7,6 @@
         public int Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
-
         public List<Cliente> _cliente { get; set; }
         public static UsuarioUnico GetInstance()
         {
@@ -19,7 +18,6 @@
                     _instance = new UsuarioUnico();
                 }
             }
-
             return _instance;
         }
     }
