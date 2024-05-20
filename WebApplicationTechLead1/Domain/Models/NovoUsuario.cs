@@ -12,7 +12,7 @@ namespace WebApplicationTechLead1.Domain.Models
         }
     }
 
-    public sealed class NovoUsuario
+    public class NovoUsuario
     {
         public int Id { get; set; }
         public string Name { get; set; }
